@@ -18,6 +18,7 @@ def locate_images(image_path):
     
 # Read task description
 def read_task_description():
+    
     for task_description in LIST_OF_TASK_DESCRIPTIONS:
         try:
             location = pyautogui.locateOnScreen(task_description, confidence=0.8)
@@ -30,7 +31,7 @@ def read_task_description():
                 return text
             
         except Exception as e:
-            print(f"Error locating task image: {e}")
+            print(f"Error locating task image: {task_description}. Error: {e}")
     return None
 
 # Refresh a task
@@ -44,6 +45,9 @@ def refresh_task():
         time.sleep(0.69)
     except Exception as e:
         print(f"Error refreshing task: {e}")
+        close_task()
+        time.sleep(0.69)
+        refresh_task()
 
 # Close a task
 def close_task():
@@ -102,6 +106,7 @@ LIST_OF_DESCRIPTIONS_TO_REFRESH = [
     "Raise 30,000 Power",
     "Use 3,600m",
     # "Use 1,800m",
+    "Use 7,200m",
 
 ]
 
@@ -143,7 +148,6 @@ while True:
                 time.sleep(0.69)
                 task_description = read_task_description()
                 if task_description:
-                    # print(f"Task description: {task_description}")
                     for details in LIST_OF_DESCRIPTIONS_TO_REFRESH:
                         if task_description.find(details) != -1:
                             print(f"Refreshing task with description: {task_description}")
